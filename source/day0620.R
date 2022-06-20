@@ -188,7 +188,7 @@ install.packages("foreign")
 library(foreign)
 student <- read.spss("student.csv")
 class(student)
-as.data.frame(student)#형변환
+as.data.frame(student) #형변환
 #5,6교시 
 #테이터 불러 오기
 #경로를 잘 잡는 것이 매우 중요
