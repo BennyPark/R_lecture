@@ -1,0 +1,75 @@
+---
+title: "day0620"
+output: html_document
+date: '2022-06-20'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## #제목(타이틀)
+
+# 제 3장 데이터의 구조
+
+1. 용어의 이해
+(1) 변수의 개념 
+수는 상수와 변수로 구분됨, 변수(variable)는 변사는 후 예: num_vector = c(1, 2, 3), iris <- iris
+객체(변수)이름 <- 테이터 / '<-"연산자 대신에 '='를 사용하기도 함, '='는 최상위 수준에서만 사용 할 수 있으며 하위 수준에서는 오류가 발생함. '<-'어디서도 사용 가능
+```{r}
+a <- b<- 1 (o)
+a
+b
+a <- b= 1 (x)
+```
+
+변수에 문자 넣기 
+```{r}
+a <- hello #(x)
+a <- "hello"#(o)
+```
+
+```{r}
+a<-c(1,2,3)
+a
+mean(a) #평균값 구하기
+max(a)#최대값
+min(a)#최소값
+rm(a) #데이터를 삭제하다는 뜻, remove의 약자
+```
+
+2. 데이터 구조
+1) 벡터
+(1) 벡터의 종류
+벡터(Vector)는 같은 유형으로 구성된 1차원 데이터 구조: 숫자형(numeric):(4칙연산: 소수점, 정수, 무리수 등 모든 수), 정수형(interger):(-1, 0, 1), 문자형(character), 범주형(factor):(데이터가 일정 범위나 기준에 따라 유형으로 분류되는 벡터), 논리형(logic):(참(TRUE)과 거짓(FALSE) 논리값)
+(2)벡터 
+```{r}
+logical_vector <- c(TRUE, FALSE)
+logical_vector
+class(logical_vector)
+
+#c( ) : 복수 데이터 입력시 사용한다. 
+a<- c(1,2)
+class(a)
+
+b<- c(1,2, "hello")
+class(b)
+
+
+d <- c(TRUE, FALSE)
+class(d)
+
+e <- c(TRUE, FALSE, "true")
+class(e)
+
+#문자형이 데이터에 삽입 되었을 경우 문자형으로 데이터로 뜸
+```
+
+#4장  데이터를 불러오고 저장하기
+1. 내장 데이터 활용
+1)R 내장 데이터
+R을 학습하는 데 유용한 데이터세트(dataset)를 제공하고 있다. = data() 함수로 알 수 있다.
+
+
+
+
