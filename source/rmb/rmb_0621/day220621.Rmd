@@ -1,0 +1,283 @@
+---
+title: "day220621"
+output:  
+  html_document:    
+    keep_md: true
+date: '2022-06-21'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##제 4장
+#1 내장 데이터 활용
+1) 내장 데이터
+R은 학습하는데 유용한 데이터세트(dataset)를 제공하고 있다. 데이터세트는 데이터들의 집합체이다.
+```{r}
+data()
+```
+R에 내장되어 있는 주요 데이터 세트
+```{r}
+
+AirPassengers	#1949~1960년의 월 단위 항공기 승객수
+airquality	#1973년 미국 뉴욕의 대기질 조사 자료
+cars	#자동차 스피드와 제동거리
+mtcars	#다양한 자동차들의 거리주행 테스트 결과
+iris	#붓꽃의 꽃받침 길이와 너비, 꽃잎 길이와 너비, 종별 자료
+Titanic	#침몰된 타이타닉호에서 생존한 승객수
+USArrests	#미국의 주별 강력 범죄 현황
+
+```
+2)ggplot2 패키지 제공 데이터 세트
+R에서 데이터를 시각화하는 데 매우 유용하게 활용되는 ggplot2 패키지도 다양한 학습 데이터 세트를 제공합니다. 
+diamonds : 다이아몬드의 가격과 특징 데이터
+economics: 미국 경제에 관한 시계열 데이터
+midwest : 미국중서부 지역의 인구 통계
+mpg: 인기 자동차의 연료 경제성 데이터터
+```{r}
+library(ggplot2)
+str(economics)
+```
+
+#2 워킹 디렉터리 지정하기 
+데이터 분석을 위해 컴퓨터에서 파일을 불러올 때는 파일이 저장되어 있는 폴더를 작업장 소인 워킹 디렉터리 (working directory)로 지정해야합니다. 그러지 않으면 "파일이나 디렉터리가 없다"는 경고 메시지가 뜨고 파일이 열리지 않습니다.
+
+경고 메시지 
+Error in file(file, "rt") : cannot open the connection
+In addtion: Warning message: In file(file, "rt") : cannot open file 'read_exam2.txt': No such file or directory
+
+방법 1
+[Session -> Set Working Director -> Choose Directory -> 윈도우의 폴더 탐색기 -> 폴더 선택 -> 열기]
+
+방법 2
+setwd()함수를 이용해 "폴더 경로"를 적으면 됨
+```{r}
+setwd("C:/Users/human/Desktop/R_lecture/source/rmb/rmb_0621/")
+getwd()
+```
+
+방법 3
+[Tools -> Global Options -> General -> Default working directory의 Browse -> 파일 타맥기에서 폴더 지정 -> OK] 
+
+#3 외부 데이터 불러오기
+1) 엑셀 파일 불러오기
+엑셀의 데이터 구조는 데이터프레임과 같습니다. csv파일과 xlsx파일 불러오는 방식은 다름
+
+(1)csv파일
+read.csv("파일 이름")
+```{r}
+read.csv("student.csv")
+```
+
+(2)엑셀파일 
+read_excel()로 불러 오는 것이다. read_excel()함수는 R의 기본 함수가 아니다. 그래서 readxl패키지를 설치하고 구동한 후에 사용할 수 있다. 그 다음 library()로 readxl를 읽고 난 다음 read_excel("파일 명")을 사용한다.
+
+
+```{r}
+library(readxl)
+read_excel("student_xl.xlsx")
+
+```
+
+(3)엑셀 시트에서 제목을 제외하고 불러오기
+```{r}
+read.csv("student1.csv")#첫줄을 제외하지 않고 불러온 경우
+```
+```{r}
+read.csv("student1.csv", skip=1)
+```
+(4)엑셀 파일에 있는 복수의 시트에서 특정 시트 불러 오기
+엑셀 파일에서 2개 이상의 시트(sheet)가 있을 때 별도 지정없을 시 첫 번째  시틀르 불어 온다. 다른 시트를 부를 때는 'sheet='를 사용한다.
+```{r}
+read_excel("student1_xl.xlsx") #첫 번째 시트 부르기
+
+```
+```{r}
+read_excel("student1_xl.xlsx", sheet = 2) #두 번재 시트 불러오기
+
+```
+
+2)txt 파일 불러오기
+txt파일은 R에 내장 되어 있기 때문에 read.table("파일명.txt")로 부른다. 
+(1)탭으로 구분된 txt파일 불러 오기
+```{r}
+read.table("student1.txt")
+```
+(2)세미콜론, 쉼표로 구분된 데이터 불러오기
+파라미트 sep(separate): 구분 방식을 지정함
+```{r}
+read.table("student2.txt")
+read.table("student2.txt", sep=";") 
+
+``` 
+```{r}
+read.table("student3.txt")
+read.table("student3.txt", sep=",")
+```
+(3)헤더 관리하기
+엑셀 파일과 txt파일의 차이
+header은 유형을 말한다. (예를 들어no, sex, height, weight등)
+그리고 header가 없을 시 'header=F'를 사용하고, 'header=T'는 유형이 있을 때 사용하다. 
+```{r}
+read.table("student1.txt", header= T)
+```
+
+```{r}
+read.table("student1.txt", header= F)
+```
+엑셀 파일에서 헤더가 없을 때
+```{r}
+read.csv("student2.csv") #첫 번째 항을 헤더로 인식한다. 
+```
+```{r}
+read.csv("student2.csv", header = F) #헤더가 없다고 성정함
+```
+
+헤더가 없는 열에 이름을 지정하기 
+colnames(객체이름)<- c("열이름", "열이름", "열이름", "열이름", ...)
+```{r}
+stu2<-read.csv("student2.csv",header = F)
+colnames(stu2) <- c("no", "sex", "height", "weight")
+stu2
+```
+
+3) SPSS파일 불러오기 
+read.spss()는 foreign패키지에 있다. 
+```{r}
+# install.packages("foreign")
+library(foreign)
+
+read.spss("student.sav")
+stu<-read.spss("student.sav")
+
+```
+
+##제 5장 데이터 연산과 기본 함수
+1. 데이터 연산
+1) 산수 연산 
+"+","-","*","/"
+"%/%": 나누기의 몫    5%/%2 = 2
+%%: 나누기의 나머지   5%%2  = 1   
+^()== "**": 제곱             5^(2) = 25 == 5**2
+
+3)숫자 연산 문법
+(1)a:z
+a부터 z까지를 의미한다. 숫자, 색인 번호가 모두 가능하다.
+1:5 =>[1] 1 2 3 4 5
+5:1 =>[1] 5 4 3 2 1
+
+x<- c(1,3,5,7,9)
+x[1:3]=>[1] 1 3 7
+
+(2)seq(form, to, by=)
+a부터 z까지 증가하거나 감소하는 숫자나 색인을 반환합니다. 
+
+```{r}
+seq(1,9)
+seq(9,1)
+seq(1, 9, by=2)
+seq(9, 1, by=-2)
+```
+(3)rep(x, each=, times=)
+rep(repeat): x값을 반복하는 방법
+```{r}
+rep(c(1:3), each=2)
+rep(c(1:3), times=2)
+rep(c(1:3), each=2, times=2)
+```
+2 데이터 구조를 알아보는 함수
+head():데이터세트에서 행의 앞부분부터 6개행만 출력
+```{r}
+head(iris) #앞 6개 행
+head(iris, 2) #앞 2개 행
+```
+
+tail():데이터세트에서 행의 뒷부분부터 6개행만 출력
+```{r}
+tail(iris) #뒤에서 6개 행
+tail(iris, 2) #뒤에서 2개 행
+```
+
+str(): 데이터세트의 구조와 유형 출력
+```{r}
+str(iris)
+```
+
+View():데이터세트를 엑셀 형식으로 출력
+```{r}
+View(iris)
+```
+
+dim():데이터세트의 행과 열의 개수 출력
+```{r}
+dim(iris)
+```
+
+length(): 데이터세트의 열의 개수 출력력
+```{r}
+length(iris)
+```
+
+class():데이터세트의 유형을 출력
+```{r}
+class(iris)
+class(iris$Sepal.Length)
+class(iris$Species)
+```
+
+ls():데이터세트의 벡터 이름을 출력
+```{r}
+ls(iris)
+```
+
+4 빈도 분서
+1) 빈도 구하기 
+빈도분석:table(데이터세트$범주형 변수)
+```{r}
+mpg1 <- read.csv("mpg1.csv", stringsAsFactors = T)
+str(mpg1)#출력하기
+table(mpg1$trans)#trans의 범주별 빈도 분석
+```
+교차 분석하기: table(데이터세트$변수1, 데이터세트$변수2)
+
+```{r}
+table(mpg1$trans, mpg1$drv)
+```
+2) 빈도의 비율 구하기
+
+1단계 : a <-table()
+2단계 : prop.table(a) #prop.table(table())도 같음 
+
+```{r}
+a<-table(mpg1$trans)
+prop.table(a)
+```
+```{r}
+b<-table(mpg1$trans, mpg1$drv)
+prop.table(b)
+```
+
+3)행과 열의 비율 형식 맞추기
+prop.table() 함수는 교차분석으로 분할된 전체 집단의 비율 합이 1이 되도록 집단별 비율을 출력합니다. 
+prop.table(a)을 보면 2개 집단의 비율 합이 1입니다. 
+prop.talbe(b)에서는 분할된 6개 집단의 빈도비율의 합이 1입니다. 
+
+prop.talbe(table(),1) :행의 합이 1이 되도록 비율을 표시
+```{r}
+prop.table(b, 1)
+```
+
+prop.table(table(),2) :열의 합이 1이 되도록 비율을 표시
+```{r}
+prop.table(b,2)
+```
+
+4) 소수점 아래 자리수 지정: round()함수
+round(숫자 또는 계산 함수, 소수점 자릿 수) 
+```{r}
+round(0.3252546 ,4)
+```
+```{r}
+round(prop.table(table(mpg1$trans)),2)
+```

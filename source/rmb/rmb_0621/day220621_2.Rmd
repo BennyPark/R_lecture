@@ -1,0 +1,88 @@
+---
+title: "day220621_2"
+output:  html_document:    keep_md: true
+date: '2022-06-21'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+p.98
+#분석 프로세스
+
+데이터 전처리르 위한 도구 dplyr
+데이터 전처리를 위한 도구 data.table
+
+dplyr : 10 GB이내
+data.table : 50GB이상
+
+배움의 측면
+dplyr 매우 쉬움
+data.table 어려움
+
+##제 6장 데이터 가공
+1. 데이터 전처리(data preprocessing) : 원본 데이터(raw data)에서 필요한 데이터을 추출하는 작업, 데이터를 합치거나 분리해서 새로운 데이터를 만드는 작업, 데이터들로 그룹을 만들어 분석하는 작업등 여러 방법으로 가공하는 방법.
+
+라이브러리 불러오기
+```{r}
+install.packages("dplyr")
+library(dplyr) #패키지 구동
+
+mpg1 <- read.csv("mpg1.csv", stringsAsFactors = F)
+#'stringAsFactors = F'가 없으면 문자형 벡터가 범주형 벡터로 불러와져서 분석할 때 문제가 발생할 수 있음음
+```
+2 변수 이름 바꾸기 : rename()
+rename() : 데이터센트에 있는 변수 이름을 빠꿔줌
+방법 1
+데이터세트 <- 데이터세트 %>% rename(새변수이름1= 기존이름1, 새변수 이름2= 기존이름2,...)
+```{r}
+mpg1_new1 <- mpg1 %>% rename(transmision = trans, drive_method =drv, city = cty)
+```
+
+방법 2
+데이터세트 <- rename(데이터세트, 새변수이름1= 기존이름1, 새변수 이름2= 기존이름2,...)
+
+```{r}
+mpg1_new2 <- rename(mpg1, transmision = trans, drive_method =drv, city = cty)
+```
+
+3. 빈도분석: count()
+count(): 데이터세트의 범주형 변수에서 범주들의 빈도를 세는 table()함수와 같은 기능을 합니다. 그러나 count() 함수의 명령어를 쓰는 방식은 다르다.
+
+예)
+count(데이터세트, 변수)
+table(데이터세트$ 변수)
+```{r}
+count(mpg1, trans)
+```
+```{r}
+table(mpg1$trans)
+```
+
+
+
+
+
+4. 데이터 세트에서 일부 열을 추출하기 
+select: 컬럼명 추출
+filter: 행 추출(조건식)
+group by: 
+summarize():
+```{r}
+str(mpg1)
+data2 <- mpg1 %>% select(drv, cty, hwy)
+data4 <- mpg1 %>% select(drv, cty, hwy) %>% filter(drv == "f")
+# %>% 단축키  ctrl + shift + m
+```
+```{r}
+str(mpg1)
+data3 <- select(mpg1, drv, cty, hwy)
+data5 <- filter(data3, drv == "4")
+
+```
+교재 p99~120
+#파생변수 만들기 
+
+데이터 미리보기
+
