@@ -25,7 +25,6 @@ mpg1 %>% summarise(mean(cty), #평균
 
 #집단으로 분류해서 집단별 통계구하기
 #(1)1개 변수를 집단 분류해서 통계구하기: group_by()
-mpg1 %>% group_by(trans) 
-     %>% summarise(mean(cty), #평균
+mpg1 %>% group_by(trans)                                          %>% summarise(mean(cty), #평균
                    sum(cty), #총합
                    median(cty)) #중간값
